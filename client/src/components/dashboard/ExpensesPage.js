@@ -1,5 +1,5 @@
 // client/src/components/dashboard/ExpensesPage.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useExpenses } from '../../context/ExpenseContext';
 import { useAuth } from '../../context/AuthContext';
 import ExpenseForm from './ExpenseForm';
@@ -17,33 +17,34 @@ const ExpensesPage = () => {
     endDate: ''
   });
 
-  useEffect(() => {
-    fetchExpenses(1, filters);
-  }, []);
-
-  const handleFilterChange = (e) => {
-    setLocalFilters({
-      ...localFilters,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const applyFilters = () => {
+  // Memoize the applyFilters function to prevent unnecessary re-renders
+  const applyFilters = useCallback(() => {
     const activeFilters = {};
     if (localFilters.category) activeFilters.category = localFilters.category;
     if (localFilters.startDate) activeFilters.startDate = localFilters.startDate;
     if (localFilters.endDate) activeFilters.endDate = localFilters.endDate;
     
     fetchExpenses(1, activeFilters);
-  };
+  }, [localFilters, fetchExpenses]);
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     setLocalFilters({
       category: '',
       startDate: '',
       endDate: ''
     });
     fetchExpenses(1, {});
+  }, [fetchExpenses]);
+
+  useEffect(() => {
+    fetchExpenses(1, filters);
+  }, [fetchExpenses, filters]);
+
+  const handleFilterChange = (e) => {
+    setLocalFilters({
+      ...localFilters,
+      [e.target.name]: e.target.value
+    });
   };
 
   const handleExpenseAdded = () => {

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+// client/src/components/dashboard/Dashboard.js
+import React, { useState, useEffect, useCallback } from 'react';
 import { useExpenses } from '../../context/ExpenseContext';
 import { useAuth } from '../../context/AuthContext';
 import { formatCurrency } from '../../utils/currency';
@@ -13,17 +14,18 @@ const Dashboard = () => {
   const [summary, setSummary] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
-  useEffect(() => {
-    fetchExpenses(1);
-    loadSummary();
-  }, []);
-
-  const loadSummary = async () => {
+  // Memoize the loadSummary function to prevent unnecessary re-renders
+  const loadSummary = useCallback(async () => {
     const result = await getExpenseSummary();
     if (result.success) {
       setSummary(result.data);
     }
-  };
+  }, [getExpenseSummary]);
+
+  useEffect(() => {
+    fetchExpenses(1);
+    loadSummary();
+  }, [fetchExpenses, loadSummary]);
 
   const handleExpenseAdded = () => {
     setShowForm(false);

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+// client/src/components/dashboard/Reports.js
+import React, { useState, useEffect, useCallback } from 'react';
 import { useExpenses } from '../../context/ExpenseContext';
-import { useAuth } from '../../context/AuthContext';
 import { formatCurrency } from '../../utils/currency';
 import {
   Chart as ChartJS,
@@ -28,7 +28,6 @@ ChartJS.register(
 
 const Reports = () => {
   const { getExpenseSummary } = useExpenses();
-  const { currentUser } = useAuth();
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState({
@@ -36,18 +35,19 @@ const Reports = () => {
     endDate: ''
   });
 
-  useEffect(() => {
-    loadSummary();
-  }, []);
-
-  const loadSummary = async () => {
+  // Memoize the loadSummary function to prevent unnecessary re-renders
+  const loadSummary = useCallback(async () => {
     setLoading(true);
     const result = await getExpenseSummary(dateRange);
     if (result.success) {
       setSummary(result.data);
     }
     setLoading(false);
-  };
+  }, [getExpenseSummary, dateRange]);
+
+  useEffect(() => {
+    loadSummary();
+  }, [loadSummary]);
 
   const handleDateChange = (e) => {
     setDateRange({
@@ -62,7 +62,7 @@ const Reports = () => {
 
   const handleClearFilters = () => {
     setDateRange({ startDate: '', endDate: '' });
-    loadSummary();
+    // loadSummary will be called automatically via useEffect when dateRange changes
   };
 
   if (loading) {
