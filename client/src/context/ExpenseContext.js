@@ -13,22 +13,30 @@ export const ExpenseProvider = ({ children }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [filters, setFilters] = useState({});
+  const [error, setError] = useState(null);
 
   const fetchExpenses = async (page = 1, newFilters = {}) => {
     setLoading(true);
+    setError(null);
     try {
       const params = new URLSearchParams({
         page,
         limit: 10,
         ...newFilters
       }).toString();
-      const response = await api.get(`/expenses?${params}`);  // Updated to include /expenses prefix
+      const response = await api.get(`/expenses?${params}`);
+      console.log('Expenses response:', response.data);
       setExpenses(response.data.expenses);
       setCurrentPage(page);
       setTotalPages(response.data.totalPages);
       setFilters(newFilters);
     } catch (error) {
-      console.error('Failed to fetch expenses', error);
+      console.error('Failed to fetch expenses:', error);
+      if (error.response) {
+        console.error('Error response:', error.response.data);
+        console.error('Error status:', error.response.status);
+      }
+      setError(error.response?.data?.message || 'Failed to fetch expenses');
     } finally {
       setLoading(false);
     }
@@ -36,10 +44,12 @@ export const ExpenseProvider = ({ children }) => {
 
   const addExpense = async (expenseData) => {
     try {
-      const response = await api.post('/expenses', expenseData);  // Updated to include /expenses prefix
+      const response = await api.post('/expenses', expenseData);
+      console.log('Add expense response:', response.data);
       await fetchExpenses(currentPage, filters);
       return { success: true, data: response.data };
     } catch (error) {
+      console.error('Failed to add expense:', error);
       return { 
         success: false, 
         message: error.response?.data?.message || 'Failed to add expense' 
@@ -49,10 +59,12 @@ export const ExpenseProvider = ({ children }) => {
 
   const updateExpense = async (id, expenseData) => {
     try {
-      const response = await api.put(`/expenses/${id}`, expenseData);  // Updated to include /expenses prefix
+      const response = await api.put(`/expenses/${id}`, expenseData);
+      console.log('Update expense response:', response.data);
       await fetchExpenses(currentPage, filters);
       return { success: true, data: response.data };
     } catch (error) {
+      console.error('Failed to update expense:', error);
       return { 
         success: false, 
         message: error.response?.data?.message || 'Failed to update expense' 
@@ -62,10 +74,12 @@ export const ExpenseProvider = ({ children }) => {
 
   const deleteExpense = async (id) => {
     try {
-      await api.delete(`/expenses/${id}`);  // Updated to include /expenses prefix
+      await api.delete(`/expenses/${id}`);
+      console.log('Expense deleted successfully');
       await fetchExpenses(currentPage, filters);
       return { success: true };
     } catch (error) {
+      console.error('Failed to delete expense:', error);
       return { 
         success: false, 
         message: error.response?.data?.message || 'Failed to delete expense' 
@@ -76,9 +90,15 @@ export const ExpenseProvider = ({ children }) => {
   const getExpenseSummary = async (dateRange = {}) => {
     try {
       const params = new URLSearchParams(dateRange).toString();
-      const response = await api.get(`/expenses/summary/stats?${params}`);  // Updated to include /expenses prefix
+      const response = await api.get(`/expenses/summary/stats?${params}`);
+      console.log('Summary response:', response.data);
       return { success: true, data: response.data };
     } catch (error) {
+      console.error('Failed to get summary:', error);
+      if (error.response) {
+        console.error('Error response:', error.response.data);
+        console.error('Error status:', error.response.status);
+      }
       return { 
         success: false, 
         message: error.response?.data?.message || 'Failed to get summary' 
@@ -89,6 +109,7 @@ export const ExpenseProvider = ({ children }) => {
   const value = {
     expenses,
     loading,
+    error,
     currentPage,
     totalPages,
     filters,

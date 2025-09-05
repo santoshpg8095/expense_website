@@ -1,4 +1,3 @@
-// client/src/components/dashboard/Dashboard.js
 import React, { useState, useEffect, useCallback } from 'react';
 import { useExpenses } from '../../context/ExpenseContext';
 import { useAuth } from '../../context/AuthContext';
@@ -9,16 +8,20 @@ import Loader from '../ui/Loader';
 import './Dashboard.css';
 
 const Dashboard = () => {
-  const { expenses, loading, fetchExpenses, getExpenseSummary } = useExpenses();
+  const { expenses, loading, error, fetchExpenses, getExpenseSummary } = useExpenses();
   const { currentUser } = useAuth();
   const [summary, setSummary] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [summaryError, setSummaryError] = useState(null);
 
   // Memoize the loadSummary function to prevent unnecessary re-renders
   const loadSummary = useCallback(async () => {
+    setSummaryError(null);
     const result = await getExpenseSummary();
     if (result.success) {
       setSummary(result.data);
+    } else {
+      setSummaryError(result.message);
     }
   }, [getExpenseSummary]);
 
@@ -49,9 +52,21 @@ const Dashboard = () => {
         </button>
       </div>
       
+      {error && (
+        <div className="error-message">
+          Error loading expenses: {error}
+        </div>
+      )}
+      
       {showForm && (
         <div className="dashboard-form">
           <ExpenseForm onSuccess={handleExpenseAdded} />
+        </div>
+      )}
+      
+      {summaryError && (
+        <div className="error-message">
+          Error loading summary: {summaryError}
         </div>
       )}
       
