@@ -1,0 +1,127 @@
+.navbar {
+  background: var(--white);
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: var(--transition);
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color) !important;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: var(--transition);
+}
+
+.navbar-brand:hover {
+  color: #2e59d9 !important;
+}
+
+.navbar-brand::before {
+  content: "💰";
+  margin-right: 10px;
+  font-size: 1.8rem;
+}
+
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  color: var(--gray-700);
+}
+
+.theme-toggle:hover {
+  background-color: var(--gray-200);
+}
+
+.navbar-user {
+  color: var(--gray-700);
+  font-weight: 500;
+  padding: 8px 15px;
+  background-color: var(--gray-100);
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.navbar-menu .btn {
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+/* Dark theme styles */
+[data-theme="dark"] .navbar {
+  background: var(--dark-color);
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .navbar-brand {
+  color: var(--white) !important;
+}
+
+[data-theme="dark"] .navbar-brand:hover {
+  color: #bac8f3 !important;
+}
+
+[data-theme="dark"] .navbar-user {
+  color: var(--white);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .theme-toggle {
+  color: var(--white);
+}
+
+[data-theme="dark"] .theme-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .navbar-brand {
+    font-size: 1.25rem;
+  }
+  
+  .navbar-menu {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .navbar-user {
+    order: -1;
+    width: 100%;
+    text-align: center;
+  }
+}

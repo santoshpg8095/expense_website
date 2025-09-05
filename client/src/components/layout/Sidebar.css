@@ -1,0 +1,111 @@
+.sidebar {
+  background: var(--sidebar-bg);
+  color: var(--white);
+  width: 250px;
+  min-height: calc(100vh - 70px);
+  padding: 20px 0;
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+  position: sticky;
+  top: 70px;
+  overflow-y: auto;
+  transition: var(--transition);
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 0 15px;
+}
+
+.sidebar-link {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: var(--border-radius);
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  transition: var(--transition);
+  font-weight: 500;
+  position: relative;
+}
+
+.sidebar-link::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background-color: transparent;
+  border-radius: 0 4px 4px 0;
+  transition: var(--transition);
+}
+
+.sidebar-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--white);
+}
+
+.sidebar-link.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--white);
+}
+
+.sidebar-link.active::before {
+  background-color: var(--white);
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] .sidebar {
+  background: var(--bg-primary);
+  border-right: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .sidebar-link {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .sidebar-link:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .sidebar-link.active {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+[data-theme="dark"] .sidebar-link.active::before {
+  background-color: var(--white);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    min-height: auto;
+    position: static;
+    padding: 15px 0;
+  }
+  
+  .sidebar-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 0 10px;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .sidebar-link {
+    padding: 10px 15px;
+    white-space: nowrap;
+    margin-bottom: 0;
+    margin-right: 5px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+  }
+  
+  .sidebar-link::before {
+    display: none;
+  }
+}

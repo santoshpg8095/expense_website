@@ -1,0 +1,174 @@
+.expense-list-container {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+}
+
+.empty-state {
+  padding: 50px 20px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.expense-list {
+  padding: 0;
+}
+
+.expense-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+
+.expense-item:hover {
+  background-color: var(--bg-secondary);
+}
+
+.expense-item:last-child {
+  border-bottom: none;
+}
+
+.expense-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+}
+
+.expense-amount {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  min-width: 100px;
+  text-align: right;
+}
+
+.expense-details {
+  flex: 1;
+}
+
+.expense-description {
+  margin: 0 0 8px 0;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.expense-meta {
+  display: flex;
+  gap: 15px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.expense-category {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: var(--white);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.expense-date {
+  color: var(--text-secondary);
+}
+
+.expense-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  border-radius: 20px;
+}
+
+.edit-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.edit-modal-content {
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: var(--border-radius);
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 0.5rem 2rem 0 rgba(0, 0, 0, 0.3);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 25px;
+  border-top: 1px solid var(--border-color);
+}
+
+.pagination-info {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] .expense-amount {
+  color: #5e72e4;
+}
+
+[data-theme="dark"] .edit-modal-content {
+  border: 1px solid var(--border-color);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .expense-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 15px 20px;
+  }
+  
+  .expense-amount {
+    align-self: flex-end;
+    font-size: 1.25rem;
+  }
+  
+  .expense-actions {
+    align-self: flex-end;
+    margin-top: 10px;
+  }
+  
+  .expense-meta {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .edit-modal-content {
+    padding: 20px;
+  }
+  
+  .pagination {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
